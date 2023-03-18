@@ -40,19 +40,21 @@ class Enemy:
         # 2. Set a speed instance variable that holds a tuple (vx, vy)
         #    which specifies how much the rectangle moves each time.
         #    vx means "velocity in x".
-        self.rectangle.center = (random.randint(width), random.randint(height))
-        self.speed = (vx, vy)
+        self.rectangle.center = (random.randint(0, width), random.randint(0, height))
+        self.speed = (5, 3)
 
+        self.width = width
+        self.height = height
+        # Storing these here so that we can use them in the bounce function easily
     def move(self):
-        print("need to implement move!")
         # Add code to move the rectangle instance variable in x by
         # the speed vx and in y by speed vy. The vx and vy are the
         # components of the speed instance variable tuple.
         # A useful method of rectangle is pygame's move_ip method.
         # Research how to use it for this task.
+        self.rectangle.move_ip(self.speed)
 
-    def bounce(self, width, height):
-        print("need to implement bounce!")
+    def bounce(self):
         # This method makes the enemy bounce off of the top/left/right/bottom
         # of the screen. For example, if you want to check if the object is
         # hitting the left side, you can test
@@ -65,6 +67,11 @@ class Enemy:
         # variable. If a hit is detected on the left or right of the screen, you
         # want to negate the vx component of the speed.
         # Make sure the speed instance variable is updated as needed.
+        if self.rectangle.left < 0 or self.rectangle.right > self.width:
+            self.speed = (self.speed[0] * -1, self.speed[1])
+        if self.rectangle.top < 0 or self.rectangle.bottom > self.height:
+            self.speed = (self.speed[0], self.speed[1] * -1)
+
 
     def draw(self, screen):
         # Same draw as Sprite
@@ -77,6 +84,7 @@ class PowerUp:
         self.image = image
         self.mask = pygame.mask.from_surface(image)
         self.rectangle = image.get_rect()
+        self.rectangle.center = (random.randint(0, width), random.randint(0, height))
 
     def draw(self, screen):
         # Same as Sprite
@@ -103,10 +111,15 @@ def main():
     enemy_sprites = []
     # Make some number of enemies that will bounce around the screen.
     # Make a new Enemy instance each loop and add it to enemy_sprites.
+    for enemy in range(0,10):
+        enemy_sprites.append(Enemy(enemy_image, width, height))
 
     # This is the character you control. Choose your image.
     player_image = pygame.image.load("Stalker_idle.png").convert_alpha()
+
+    player_image = pygame.transform.smoothscale(player_image, (100, 100)) #this is to scale the player sprite - Louie
     player_sprite = Sprite(player_image)
+
     life = 3
 
     # This is the powerup image. Choose your image.
@@ -135,6 +148,10 @@ def main():
         # A player is likely to overlap an enemy for a few iterations
         # of the game loop - experiment to find a small value to deduct that
         # makes the game challenging but not frustrating.
+        for enemy in enemy_sprites:
+            enemy.move()
+            enemy.bounce()
+        # Still need to implement collision and deduction, just wanted to see things move
 
         # Loop over the powerups. If the player sprite is colliding, add
         # 1 to the life.
@@ -149,7 +166,7 @@ def main():
         # often, so the game is challenging.
 
         # Erase the screen with a background color
-        screen.fill((0,100,50)) # fill the window with a color
+        screen.fill((199,196,168)) # fill the window with a color
 
         # Draw the characters
         for enemy_sprite in enemy_sprites:
