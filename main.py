@@ -40,6 +40,8 @@ class Enemy:
         # 2. Set a speed instance variable that holds a tuple (vx, vy)
         #    which specifies how much the rectangle moves each time.
         #    vx means "velocity in x".
+        self.rectangle.center = (random.randint(width), random.randint(height))
+        self.speed = (vx, vy)
 
     def move(self):
         print("need to implement move!")
@@ -94,7 +96,7 @@ def main():
 
     # Load image assets
     # Choose your own image
-    enemy = pygame.image.load("GolfBall.png").convert_alpha()
+    enemy = pygame.image.load("blackholetrap_icon.png").convert_alpha()
     # Here is an example of scaling it to fit a 50x50 pixel size.
     enemy_image = pygame.transform.smoothscale(enemy, (50, 50))
 
@@ -103,12 +105,12 @@ def main():
     # Make a new Enemy instance each loop and add it to enemy_sprites.
 
     # This is the character you control. Choose your image.
-    player_image = pygame.image.load("Wizard.gif").convert_alpha()
+    player_image = pygame.image.load("Stalker_idle.png").convert_alpha()
     player_sprite = Sprite(player_image)
     life = 3
 
     # This is the powerup image. Choose your image.
-    powerup_image = pygame.image.load("Knight.gif").convert_alpha()
+    powerup_image = pygame.image.load("Relic_Icon.png").convert_alpha()
     # Start with an empty list of powerups and add them as the game runs.
     powerups = []
 
