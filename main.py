@@ -151,7 +151,8 @@ def main():
         for enemy in enemy_sprites:
             enemy.move()
             enemy.bounce()
-        # Still need to implement collision and deduction, just wanted to see things move
+            if pixel_collision(enemy.mask,enemy.rectangle,player_sprite.mask,player_sprite.rectangle):
+                life = life - 0.1
 
         # Loop over the powerups. If the player sprite is colliding, add
         # 1 to the life.
