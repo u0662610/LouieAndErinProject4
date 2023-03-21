@@ -104,7 +104,7 @@ def main():
 
     # Load image assets
     # Choose your own image
-    enemy = pygame.image.load("blackholetrap_icon.png").convert_alpha()
+    enemy = pygame.image.load("bullet2.png").convert_alpha()
     # Here is an example of scaling it to fit a 50x50 pixel size.
     enemy_image = pygame.transform.smoothscale(enemy, (50, 50))
 
@@ -115,7 +115,7 @@ def main():
         enemy_sprites.append(Enemy(enemy_image, width, height))
 
     # This is the character you control. Choose your image.
-    player_image = pygame.image.load("Stalker_idle.png").convert_alpha()
+    player_image = pygame.image.load("FireBoy.GIF").convert_alpha()
 
     player_image = pygame.transform.smoothscale(player_image, (100, 100)) #this is to scale the player sprite - Louie
     player_sprite = Sprite(player_image)
@@ -123,8 +123,8 @@ def main():
     life = 3
 
     # This is the powerup image. Choose your image.
-    powerup_image = pygame.image.load("Relic_Icon.png").convert_alpha()
-    powerup_image = pygame.transform.smoothscale(powerup_image, (100, 100))
+    powerup_image = pygame.image.load("WoodLog.png").convert_alpha()
+    powerup_image = pygame.transform.smoothscale(powerup_image, (50, 50))
     # Start with an empty list of powerups and add them as the game runs.
     powerups = []
 
@@ -181,7 +181,7 @@ def main():
             powerups.append(PowerUp(powerup_image, width, height))
 
         # Erase the screen with a background color
-        screen.fill((199,196,168)) # fill the window with a color
+        screen.fill((188,202,205)) # fill the window with a color
 
         # Draw the characters
         for enemy_sprite in enemy_sprites:
