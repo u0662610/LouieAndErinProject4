@@ -155,7 +155,7 @@ def main():
         # makes the game challenging but not frustrating.
         for enemy in enemy_sprites:
             if player_sprite.is_colliding(enemy):
-                life = life - 0.4
+                life = life - 0.1
 
         # Loop over the powerups. If the player sprite is colliding, add
         # 1 to the life.
@@ -166,7 +166,7 @@ def main():
 
         # Make a list comprehension that removes powerups that are colliding with
         # the player sprite.
-        powerups = [powerup for powerup in powerups if player_sprite.is_colliding(powerup)]
+        powerups = [powerup for powerup in powerups if not player_sprite.is_colliding(powerup)]
 
         # Loop over the enemy_sprites. Each enemy should call move and bounce.
         for enemy in enemy_sprites:
@@ -176,7 +176,8 @@ def main():
         # Choose a random number. Use the random number to decide to add a new
         # powerup to the powerups list. Experiment to make them appear not too
         # often, so the game is challenging.
-        for power in range(0, 2):
+        random_number = random.randint(0,30)
+        if random_number == 2:
             powerups.append(PowerUp(powerup_image, width, height))
 
         # Erase the screen with a background color
