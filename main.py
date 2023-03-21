@@ -90,6 +90,24 @@ class PowerUp:
         # Same as Sprite
         screen.blit(self.image, self.rectangle)
 
+class Fast_Enemy(Enemy):
+    def __init__(self, image, width, height):
+        self.image = image
+        self.mask = pygame.mask.from_surface(image)
+        self.rectangle = image.get_rect()
+
+    # this part will randomize what side the big boy comes from
+        self.rand_descision = random.randint(1, 2)
+        if self.rand_descision == 1:
+            self.rectangle.center = (0, random.randint(0, height))
+            self.speed = (7, random.randint(-10, 10))
+        else:
+            self.rectangle.center = (width, random.randint(0, height))
+            self.speed = (-7, random.randint(-10, 10))
+
+        self.width = width
+        self.height = height
+
 def main():
     # Setup pygame
     pygame.init()
@@ -120,14 +138,19 @@ def main():
     player_image = pygame.transform.smoothscale(player_image, (100, 100)) #this is to scale the player sprite - Louie
     player_sprite = Sprite(player_image)
 
-    life = 3
+    life = 5
 
     # This is the powerup image. Choose your image.
-    powerup_image = pygame.image.load("WoodLog.png").convert_alpha()
+    powerup_image = pygame.image.load("Little_Flame.png").convert_alpha()
     powerup_image = pygame.transform.smoothscale(powerup_image, (50, 50))
     # Start with an empty list of powerups and add them as the game runs.
     powerups = []
 
+    # Adding in our new stuff here!!
+    enemy2 = pygame.image.load("bullet1.png").convert_alpha()
+    enemy2_image = pygame.transform.smoothscale(enemy2, (110, 110))
+
+    enemy2_sprites = []
 
     # Main part of the game
     is_playing = True
@@ -183,6 +206,21 @@ def main():
         # Erase the screen with a background color
         screen.fill((188,202,205)) # fill the window with a color
 
+        # Adding code for our new stuff here (new enemy)!!
+        random_number = random.randint(0, 40)
+        if random_number == 2:
+            enemy2_sprites.append(Fast_Enemy(enemy2_image, width, height))
+
+        for enemy in enemy2_sprites:
+            enemy.move()
+
+        for enemy_sprite in enemy2_sprites:
+            enemy_sprite.draw(screen)
+
+        for enemy in enemy2_sprites:
+            if player_sprite.is_colliding(enemy):
+                life = life - 0.4
+
         # Draw the characters
         for enemy_sprite in enemy_sprites:
             enemy_sprite.draw(screen)
@@ -200,6 +238,11 @@ def main():
         pygame.display.update()
         # Pause for a few milliseconds
         pygame.time.wait(20)
+
+        #implementing a win condition
+        if life >= 10:
+            print ("You Win!")
+            break
 
     # Once the game loop is done, pause, close the window and quit.
     # Pause for a few seconds
