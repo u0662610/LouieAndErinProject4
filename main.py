@@ -124,14 +124,19 @@ def main():
 
     # This is the powerup image. Choose your image.
     powerup_image = pygame.image.load("Relic_Icon.png").convert_alpha()
+    powerup_image = pygame.transform.smoothscale(powerup_image, (100, 100))
     # Start with an empty list of powerups and add them as the game runs.
     powerups = []
+
 
     # Main part of the game
     is_playing = True
     # while loop
     while is_playing:# while is_playing is True, repeat
     # Modify the loop to stop when life is <= to 0.
+        if life <= 0:
+            print("You Died, Better Luck Next Time!")
+            break
 
         # Check for events
         for event in pygame.event.get():
@@ -149,21 +154,31 @@ def main():
         # of the game loop - experiment to find a small value to deduct that
         # makes the game challenging but not frustrating.
         for enemy in enemy_sprites:
-            enemy.move()
-            enemy.bounce()
-        # Still need to implement collision and deduction, just wanted to see things move
+            if player_sprite.is_colliding(enemy):
+                life = life - 0.1
 
         # Loop over the powerups. If the player sprite is colliding, add
         # 1 to the life.
 
+        for powerup in powerups:
+            if pixel_collision(powerup.mask, powerup.rectangle,player_sprite.mask,player_sprite.rectangle):
+                life = life + 1
+
         # Make a list comprehension that removes powerups that are colliding with
         # the player sprite.
+        powerups = [powerup for powerup in powerups if not player_sprite.is_colliding(powerup)]
 
         # Loop over the enemy_sprites. Each enemy should call move and bounce.
+        for enemy in enemy_sprites:
+            enemy.move()
+            enemy.bounce()
 
         # Choose a random number. Use the random number to decide to add a new
         # powerup to the powerups list. Experiment to make them appear not too
         # often, so the game is challenging.
+        random_number = random.randint(0,40)
+        if random_number == 2:
+            powerups.append(PowerUp(powerup_image, width, height))
 
         # Erase the screen with a background color
         screen.fill((199,196,168)) # fill the window with a color
