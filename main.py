@@ -146,13 +146,13 @@ def main():
     # Start with an empty list of powerups and add them as the game runs.
     powerups = []
 
-# Adding in our new stuff here!!
+    # Adding in our new stuff here!!
     enemy2 = pygame.image.load("bullet1.png").convert_alpha()
     enemy2_image = pygame.transform.smoothscale(enemy2, (110, 110))
 
     enemy2_sprites = []
 
-#Additional power up creation
+    #Additional power up creation
     powerup_image2 = pygame.image.load("WoodLog.png").convert_alpha()
     powerup_image2 = pygame.transform.smoothscale(powerup_image2, (50, 50))
 
@@ -226,7 +226,7 @@ def main():
             if player_sprite.is_colliding(enemy):
                 life = life - 0.4
 
-    #Additional code for an additional power up
+        #Additional code for an additional power up
         for powerup in powerups_2:
             if pixel_collision(powerup.mask, powerup.rectangle,player_sprite.mask,player_sprite.rectangle):
                 life = life + 2
@@ -254,7 +254,7 @@ def main():
         label = myfont.render(text, True, (255, 255, 0))
         screen.blit(label, (20, 20))
 
-    # Additional code implementing a win condition
+        # Additional code implementing a win condition
         if life >= 40:
             break
 
@@ -263,7 +263,7 @@ def main():
         # Pause for a few milliseconds
         pygame.time.wait(20)
 
-# Additional code to show text of whether player won or died
+    # Additional code to show text of whether player won or died
     if life <= 0:
         dead_text = "You Died, Better Luck Next Time!"
         dead_label = myfont.render(dead_text, True, (239, 0, 0),(255,255,255))
