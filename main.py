@@ -211,7 +211,7 @@ def main():
         # Erase the screen with a background color
         screen.fill((188,202,205)) # fill the window with a color
 
-    # Adding code for our new stuff here (new enemy)!!
+        # Adding code for our new stuff here (new enemy)!!
         random_number = random.randint(0, 40)
         if random_number == 2:
             enemy2_sprites.append(Fast_Enemy(enemy2_image, width, height))
