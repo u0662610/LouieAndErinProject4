@@ -152,13 +152,18 @@ def main():
 
     enemy2_sprites = []
 
+    #Additional power up creation
+    powerup_image2 = pygame.image.load("WoodLog.png").convert_alpha()
+    powerup_image2 = pygame.transform.smoothscale(powerup_image2, (50, 50))
+
+    powerups_2 = []
+
     # Main part of the game
     is_playing = True
     # while loop
     while is_playing:# while is_playing is True, repeat
     # Modify the loop to stop when life is <= to 0.
         if life <= 0:
-            print("You Died, Better Luck Next Time!")
             break
 
         # Check for events
@@ -199,8 +204,8 @@ def main():
         # Choose a random number. Use the random number to decide to add a new
         # powerup to the powerups list. Experiment to make them appear not too
         # often, so the game is challenging.
-        random_number = random.randint(0,40)
-        if random_number == 2:
+        random_number = random.randint(0,20)
+        if random_number == 6:
             powerups.append(PowerUp(powerup_image, width, height))
 
         # Erase the screen with a background color
@@ -221,6 +226,21 @@ def main():
             if player_sprite.is_colliding(enemy):
                 life = life - 0.4
 
+        #Additional code for an additional power up
+        for powerup in powerups_2:
+            if pixel_collision(powerup.mask, powerup.rectangle,player_sprite.mask,player_sprite.rectangle):
+                life = life + 2
+
+        powerups_2 = [powerup for powerup in powerups_2 if not player_sprite.is_colliding(powerup)]
+
+        random_number = random.randint(0, 80)
+        if random_number == 8:
+            powerups_2.append(PowerUp(powerup_image2, width, height))
+
+        for powerup in powerups_2:
+            powerup.draw(screen)
+
+
         # Draw the characters
         for enemy_sprite in enemy_sprites:
             enemy_sprite.draw(screen)
@@ -234,19 +254,32 @@ def main():
         label = myfont.render(text, True, (255, 255, 0))
         screen.blit(label, (20, 20))
 
+        # Additional code implementing a win condition
+        if life >= 40:
+            break
+
         # Bring all the changes to the screen into view
         pygame.display.update()
         # Pause for a few milliseconds
         pygame.time.wait(20)
 
-        #implementing a win condition
-        if life >= 10:
-            print ("You Win!")
-            break
+    # Additional code to show text of whether player won or died
+    if life <= 0:
+        dead_text = "You Died, Better Luck Next Time!"
+        dead_label = myfont.render(dead_text, True, (239, 0, 0),(255,255,255))
+        screen.blit(dead_label, (90, 175))
+        pygame.display.update()
+
+    if life >= 40:
+        life_text = "You Win! Congratulations!!!"
+        life_label = myfont.render(life_text, True, (19, 118, 9),(255,255,255))
+        screen.blit(life_label, (125, 175))
+        pygame.display.update()
 
     # Once the game loop is done, pause, close the window and quit.
     # Pause for a few seconds
     pygame.time.wait(2000)
+
     pygame.quit()
     sys.exit()
 
