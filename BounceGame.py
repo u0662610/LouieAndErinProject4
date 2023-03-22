@@ -204,7 +204,7 @@ def main():
         # Choose a random number. Use the random number to decide to add a new
         # powerup to the powerups list. Experiment to make them appear not too
         # often, so the game is challenging.
-        random_number = random.randint(0,20)
+        random_number = random.randint(0,25)
         if random_number == 6:
             powerups.append(PowerUp(powerup_image, width, height))
 
