@@ -204,7 +204,7 @@ def main():
         # Choose a random number. Use the random number to decide to add a new
         # powerup to the powerups list. Experiment to make them appear not too
         # often, so the game is challenging.
-        random_number = random.randint(0,40)
+        random_number = random.randint(0,20)
         if random_number == 6:
             powerups.append(PowerUp(powerup_image, width, height))
 
@@ -233,7 +233,7 @@ def main():
 
         powerups_2 = [powerup for powerup in powerups_2 if not player_sprite.is_colliding(powerup)]
 
-        random_number = random.randint(0, 60)
+        random_number = random.randint(0, 80)
         if random_number == 8:
             powerups_2.append(PowerUp(powerup_image2, width, height))
 
@@ -255,7 +255,7 @@ def main():
         screen.blit(label, (20, 20))
 
     # Additional code implementing a win condition
-        if life >= 30:
+        if life >= 40:
             break
 
         # Bring all the changes to the screen into view
@@ -270,7 +270,7 @@ def main():
         screen.blit(dead_label, (90, 175))
         pygame.display.update()
 
-    if life >= 30:
+    if life >= 40:
         life_text = "You Win! Congratulations!!!"
         life_label = myfont.render(life_text, True, (19, 118, 9),(255,255,255))
         screen.blit(life_label, (125, 175))
