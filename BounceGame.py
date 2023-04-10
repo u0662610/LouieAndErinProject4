@@ -129,6 +129,22 @@ class PowerUpRotate(PowerUp):
 
         super().draw(screen)
 
+#Extention of Enemy Class A6
+class DropEnemy(Enemy):
+    def __init__(self,image, width, height):
+        super().__init__(image,width,height)
+        self.position = self.rectangle.center
+
+    def move(self):
+        vx,vy = self.speed
+        vy = vy + 0.2
+        self.speed = (vx, vy)
+        x,y = self.position
+        x,y = (x+vx, y+vy)
+        self.position = (x,y)
+        self.rectangle.center = self.position
+
+
 def main():
     # Setup pygame
     pygame.init()
@@ -146,12 +162,18 @@ def main():
     enemy = pygame.image.load("bullet2.png").convert_alpha()
     # Here is an example of scaling it to fit a 50x50 pixel size.
     enemy_image = pygame.transform.smoothscale(enemy, (50, 50))
-
     enemy_sprites = []
+
+
+    # Adding Drop Enemy - A6
+    drop_enemy = pygame.image.load("snowman.png").convert_alpha()
+    drop_enemy_image = pygame.transform.smoothscale(drop_enemy,(60,60))
+
     # Make some number of enemies that will bounce around the screen.
     # Make a new Enemy instance each loop and add it to enemy_sprites.
-    for enemy in range(0,10):
+    for enemy in range(0,5):
         enemy_sprites.append(Enemy(enemy_image, width, height))
+        enemy_sprites.append(DropEnemy(drop_enemy_image,width,height))
 
     # This is the character you control. Choose your image.
     player_image = pygame.image.load("FireBoy.GIF").convert_alpha()
