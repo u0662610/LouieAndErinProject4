@@ -81,10 +81,13 @@ class PowerUp:
     def __init__(self, image, width, height):
         # Set the PowerUp position randomly like is done for the Enemy class.
         # There is no speed for this object as it does not move.
+        # Adding self.width/height so that A6 power up works right
+        self.width = width
+        self.height = height
         self.image = image
         self.mask = pygame.mask.from_surface(image)
         self.rectangle = image.get_rect()
-        self.rectangle.center = (random.randint(0, width), random.randint(0, height))
+        self.rectangle.center = (random.randint(0, self.width), random.randint(0, self.height))
 
     def draw(self, screen):
         # Same as Sprite
@@ -108,6 +111,24 @@ class Fast_Enemy(Enemy):
         self.width = width
         self.height = height
 
+    #Making power up for A6 here!
+class PowerUpRotate(PowerUp):
+    def __init__(self, image, width, height):
+        super().__init__(image, width, height)
+        self.angle = 0
+        self.original_image = image
+    def draw(self, screen):
+        rotated_image = pygame.transform.rotate(self.original_image, self.angle)
+        self.image = rotated_image
+
+        current_center = self.rectangle.center
+        self.rectangle = self.image.get_rect()
+        self.rectangle.center = current_center
+        self.mask = pygame.mask.from_surface(self.image)
+        self.angle += 3
+
+        super().draw(screen)
+
 def main():
     # Setup pygame
     pygame.init()
@@ -118,7 +139,7 @@ def main():
     # Define the screen
     width, height = 600, 400
     size = width, height
-    screen = pygame.display.set_mode((width, height))
+    screen = pygame.display.set_mode((size))
 
     # Load image assets
     # Choose your own image
@@ -143,6 +164,7 @@ def main():
     # This is the powerup image. Choose your image.
     powerup_image = pygame.image.load("Little_Flame.png").convert_alpha()
     powerup_image = pygame.transform.smoothscale(powerup_image, (50, 50))
+
     # Start with an empty list of powerups and add them as the game runs.
     powerups = []
 
@@ -157,6 +179,10 @@ def main():
     powerup_image2 = pygame.transform.smoothscale(powerup_image2, (50, 50))
 
     powerups_2 = []
+
+    # Adding A6 Rotating powerup here
+    rotate_powerup = pygame.image.load("Swirl_Fire.png").convert_alpha()
+    rotate_powerup = pygame.transform.smoothscale(rotate_powerup, (50, 50))
 
     # Main part of the game
     is_playing = True
@@ -204,12 +230,16 @@ def main():
         # Choose a random number. Use the random number to decide to add a new
         # powerup to the powerups list. Experiment to make them appear not too
         # often, so the game is challenging.
-        random_number = random.randint(0,25)
+        random_number = random.randint(0,50)
         if random_number == 6:
             powerups.append(PowerUp(powerup_image, width, height))
 
+        # A6 power spawning here
+        if random_number == 5:
+            powerups.append(PowerUpRotate(rotate_powerup, width, height))
+
         # Erase the screen with a background color
-        screen.fill((188,202,205)) # fill the window with a color
+        screen.fill((211, 224, 235)) # fill the window with a color
 
         # Adding code for our new stuff here (new enemy)!!
         random_number = random.randint(0, 40)
