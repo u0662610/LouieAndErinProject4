@@ -67,9 +67,9 @@ class Enemy:
         # variable. If a hit is detected on the left or right of the screen, you
         # want to negate the vx component of the speed.
         # Make sure the speed instance variable is updated as needed.
-        if self.rectangle.left < 0 or self.rectangle.right > self.width:
+        if self.rectangle.left < 2 or self.rectangle.right > self.width - 2:
             self.speed = (self.speed[0] * -1, self.speed[1])
-        if self.rectangle.top < 0 or self.rectangle.bottom > self.height:
+        if self.rectangle.top < 2 or self.rectangle.bottom > self.height - 2:
             self.speed = (self.speed[0], self.speed[1] * -1)
 
 
@@ -137,7 +137,7 @@ class DropEnemy(Enemy):
 
     def move(self):
         vx,vy = self.speed
-        vy = vy + 0.2
+        vy = vy + 0.1
         self.speed = (vx, vy)
         x,y = self.position
         x,y = (x+vx, y+vy)
@@ -173,7 +173,9 @@ def main():
     # Make a new Enemy instance each loop and add it to enemy_sprites.
     for enemy in range(0,5):
         enemy_sprites.append(Enemy(enemy_image, width, height))
+        #A6 - Adds the Drop enemies into the same list and makes the enemies half and half
         enemy_sprites.append(DropEnemy(drop_enemy_image,width,height))
+
 
     # This is the character you control. Choose your image.
     player_image = pygame.image.load("FireBoy.GIF").convert_alpha()
