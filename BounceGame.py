@@ -67,12 +67,19 @@ class Enemy:
         # variable. If a hit is detected on the left or right of the screen, you
         # want to negate the vx component of the speed.
         # Make sure the speed instance variable is updated as needed.
-        if self.rectangle.left < 2 or self.rectangle.right > self.width - 2:
+        if self.rectangle.left < 0:
+            self.rectangle.left = 0
             self.speed = (self.speed[0] * -1, self.speed[1])
-        if self.rectangle.top < 2 or self.rectangle.bottom > self.height - 2:
+        if self.rectangle.right > self.width:
+            self.rectangle.right = self.width
+            self.speed = (self.speed[0] * -1, self.speed[1])
+
+        if self.rectangle.top < 0:
+            self.rectangle.top = 0
             self.speed = (self.speed[0], self.speed[1] * -1)
-        # Added the 2s to make sort of a boundary between the edge so that the images didn't go off the edge
-        # of the screen
+        if self.rectangle.bottom > self.height:
+            self.rectangle.bottom = self.height
+            self.speed = (self.speed[0], self.speed[1] * -1)
 
 
     def draw(self, screen):
